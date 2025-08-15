@@ -1,10 +1,4 @@
 
-variable "platform_config" {
-  description = "Platform configuration"
-  type        = map(string)
-  default     = {}
-}
-
 variable "service_name" {
   type        = string
   description = "The name of the service."
