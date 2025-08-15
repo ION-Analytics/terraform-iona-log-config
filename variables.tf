@@ -1,4 +1,10 @@
 
+variable "platform_config" {
+  description = "Platform configuration, must have firelens_bucket variable that specifies the name of the bucket to save the external fluent-bit configuration to"
+  type        = map(string)
+  default     = {}
+}
+
 variable "service_name" {
   type        = string
   description = "The name of the service."
