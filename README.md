@@ -2,6 +2,10 @@
 
 This module is intended to be used with the ION-Analytics/ecs-service/iona module and will simplify the default firelens config.
 
+** This module requires the addition of a "firelens_bucket" to your platform_config **
+
+That key is used to define where the additional fluentbit configuration object will be stored
+
 Example call:
 
 ```
