@@ -1,3 +1,25 @@
+# A preface about logging from containers
+
+With normal EC2 instances it's common to have logs scattered around the file system in several different formats. In the past we've used splunk to collect these files and parse them into useful data.
+
+With containers logs are generally collected by emitting them to STDOUT and STDERR. This can be an issue if your log lines are not all emitted in the same format (think web access logs vs java stack traces)
+
+As such it's best practice to format your log output in the following ways:
+* JSON format
+* No line breaks
+
+JSON format allows the log entry ot parsed into a series of key/values or even more complex data structures that would be hard to encapsulate on a single line. Most log formatters have a json option available:
+* Log4J2: https://logging.apache.org/log4j/2.x/manual/json-template-layout.html
+* Here's a sampling of Ruby formatters: https://www.highlight.io/blog/5-best-ruby-logging-libraries
+* Python: https://pypi.org/project/python-json-logger/
+* Here's a general article that talks about the benefits of logging via JSON: https://betterstack.com/community/guides/logging/json-logging/
+
+No line breaks is especially important for things like Stack Traces from Java. Because docker has no way of knowing if a new line is a continuation of the previous event or not, it can be difficult to turn a 140-line stack trace into a single event. Especially if multiple threads are writing at the same time. Your log formatter should have a way of replacing or removing end-of-line characters:
+
+* Log4J2: Use the 'compact=true' flag in your JSON formatter: https://logging.apache.org/log4j/2.x/manual/layouts.html#JSONLayout
+* Ruby: https://stackoverflow.com/questions/13311694/how-to-format-ruby-exception-with-backtrace-into-a-string
+* Python: I _think_ this is handled automatically by the python json logger?
+
 # Terraform-IONA-Log-Config module
 
 This module is intended to be called from a ECS service repo that wants to log through Firelens/Fluent-bit into Datadog.
